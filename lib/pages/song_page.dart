@@ -90,37 +90,60 @@ class SongPage extends StatelessWidget {
                         child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                //start time
-                                Text(formatTime(value.currentDuration)),
 
                                 //shuffle icon
                                 const Icon(Icons.shuffle),
 
-                                //repeat icon
+                                //loop icon
                                 const Icon(Icons.repeat),
 
-                                //end time
-                                Text(formatTime(value.totalDuration))
+                                //repeat icon
+                                IconButton(
+                                  onPressed: (){
+                                    Provider.of<PlaylistProvider>(context,listen: false).toggleLoopMode();
+                                  },
+                                    icon: Icon(Icons.loop,color: value.isLoopMode
+                                        ? Colors.green
+                                        :Theme.of(context).colorScheme.inversePrimary
+                                      ,)
+                                ),
+
+
                               ],
-                            ),),
-                            SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0)
-                              ),
-                              child: Slider(
-                                  min: 0,
-                                  max: value.totalDuration.inSeconds.toDouble(),
-                                  value: value.currentDuration.inSeconds.toDouble(),
-                                  activeColor: Colors.green,
-                                  onChanged: (double double){
-                                    // duration when the user is sliding around
-                                  },
-                                  onChangeEnd: (double double){
-                                    //sliding has finished, go to that position in song duration
-                                    value.seek(Duration(seconds: double.toInt()));
-                                  },
-                              ),
-                            )
+                            ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //start time
+                          Text(formatTime(value.currentDuration)),
+
+                          //end time
+                          Text(formatTime(value.totalDuration))
+                        ],
+                      ),
+                    ),
+
+                    SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 0)
+                        ),
+                        child: Slider(
+                            min: 0,
+                            max: value.totalDuration.inSeconds.toDouble(),
+                            value: value.currentDuration.inSeconds.toDouble(),
+                            activeColor: Colors.green,
+                            onChanged: (double double){
+                              // duration when the user is sliding around
+                            },
+                            onChangeEnd: (double double){
+                              //sliding has finished, go to that position in song duration
+                              value.seek(Duration(seconds: double.toInt()));
+                            },
+                        ),
+                      )
                           ],
                         ),
                         const SizedBox(height: 10,),
@@ -132,7 +155,7 @@ class SongPage extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: value.playPreviousSong,
-                        child: NeuBox(child: Icon(Icons.skip_previous),),
+                        child: const NeuBox(child: Icon(Icons.skip_previous),),
                       ),
                     ),
                     const SizedBox(width: 20,),
