@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../pages/settings_page.dart';
+import '../pages/settings/settings_page.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
